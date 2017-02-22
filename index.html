@@ -1,0 +1,2123 @@
+<!DOCTYPE html>	
+	<html lang="es">
+		<head>
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<meta name="description" content="Plataforma que permite encontrar el Centro de Atencion al Cliente mas rapido y mas cercano de su operadora.">
+			<meta name="author" content="MyM">
+			<meta name="theme-color" content="#00b5e2">
+
+			<title>Encuentra tu CAC</title>
+			
+			<!-- Browser Icon -->
+			<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
+
+			<!--Import Google Icon Font-->
+			<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+			
+			<!-- Bootstrap Core CSS -->
+			<link href="css/bootstrap.min.css" rel="stylesheet">
+			
+			<!-- Font Awesome icons -->
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+			
+			<!-- Own CSS -->
+			<link rel="stylesheet" type="text/css" href="css/etcac.css">
+			
+			<style>
+				html, body, header, main, #header-wrapper, #background-blur-layer, .section-container, #instructionModal {
+					height: 100%;
+					width: 100%;
+					margin: 0;
+					padding: 0;
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+					text-align: center;
+				}
+				
+				.nav-wrapper{
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+				}
+				@media(min-width:767px) {
+					.navbar {
+						padding: 20px 0;
+						-webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
+						-moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
+						transition: background .5s ease-in-out,padding .5s ease-in-out;
+					}
+					.top-nav-collapse {
+						padding: 0;
+					}
+				}
+				header {
+					text-align: center;
+					background-image: url("img/bg.jpg");
+					background-repeat: no-repeat;
+					background-attachment: fixed;
+					background-position: 50% 50%;
+					background-color: #00b5e2;
+					background-size:cover;
+				}
+				#background-blur-layer {
+					position: absolute;
+					z-index: 1;
+					background-color: #00b5e2;
+					opacity: 0.75;
+					background-size:cover;
+				}
+				#header-wrapper {
+					position: absolute;
+					z-index:2;
+					left: 0;
+					top: 0;
+					vertical-align: middle;
+					text-align:center;
+				}
+				#header-text {
+					padding: 10% 0 2% 0;
+					vertical-align: middle;
+					text-align:center;
+				}
+				#map-canvas {
+					height: inherit;
+					width: inherit;
+					margin: 0;
+					padding: 0;
+				}
+				#intro-lead-in {
+					font: Roboto-Bold, Corbel, Serif;
+					font-size: 200%;
+					color: #ffffff;
+				}
+				#intro-heading {
+					font: Roboto-Bold, Corbel, Serif;
+					font-size: 150%;
+					color: #ffffff;
+				}
+				#footer-section {
+					width: 100%;
+					margin: 0;
+					padding: 0;
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+					text-align: center;
+					background: #004379;
+				}
+				#firstSection {
+					padding-top: 50px;
+					text-align: center;
+					background: #006eb8;
+					position: relative;
+				}
+				#secondSection {
+					max-height: 100%;
+					padding-top: 50px;
+					text-align: center;
+					background: #006eb8;
+					position: relative;
+					/* overflow-x: hidden; */
+				}
+				#thirdSection {
+					display: none;
+					align-content: center;
+					padding-top: 50px;
+					text-align: center;
+					background: #dbdcdf;
+				}
+				#fourthSection {
+					display: none;
+					padding-top: 50px;
+					text-align: center;
+					background: #00b5e2;
+				}
+				#fifthSection {
+					display: none;
+					padding-top: 50px;
+					text-align: center;
+					background: #fff;
+				}
+				#sixthSection {
+					min-height: 100%;
+					width: 100%;
+					margin: 0;
+					padding: 0;
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+					text-align: center;
+					padding-top: 50px;
+					text-align: center;
+					background: #fff;
+				}
+				#mapNextButtonWrapper {
+					z-index: 4;
+					position: absolute;
+					bottom: 4%;
+					width: 70%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					text-align: center;
+				}
+				#instructionWrapper{
+					z-index: 3;
+					width: 100%;
+					position: absolute;
+					bottom: 5%;
+					text-align: center;
+				}
+				.buttonDivBlue {
+					width: 40%;
+					border: 5px solid #0087cc;
+					font-size: 150%;
+					background-color: transparent;
+					color: #0087cc;
+					text-align:center;
+				}
+				.buttonDiv {
+					border: 5px solid white;
+					font-size: 150%;
+					background-color: transparent;
+					color: white;
+					text-align:center;
+				}
+				.buttonText {
+					color: white;
+					text-align:center;
+					text-decoration: none;
+				}
+				#comenzarButton {
+					font: Roboto-Bold, Corbel, Serif;
+					font-size: 150%
+				}
+				.buttonText:hover {
+					color: #c0c0c0;
+				}
+				#operadoraSelect {
+					padding: 2% 0 2% 0;
+					vertical-align: middle;
+					text-align:center;
+					font: Roboto-Bold, Corbel, Serif;
+					font-size: 150%;
+					color: #ffffff;
+				}
+				#divSelect {
+					font: Roboto-Bold, Corbel, Serif;
+					padding: 5% 0% 10% 0%;
+					font-size: 125%;
+					color: #ffffff;
+				}
+				#Operadora {
+					padding: 1% 2% 1% 2%;
+					border: 5px solid white;
+					font-size: 150%;
+					background-color: transparent;
+					color: white;
+					text-align: center;
+				}
+				option {
+					background-color: #0087cc;
+					color: white;
+				}
+				.navbar-default {
+					background-color: #006eb8;
+				}
+				#mainNavLogo {
+					color: white;
+				}
+				#icon-bar-1, #icon-bar-2, #icon-bar-3 {
+					background-color: white;
+				}
+				#menu-link-1, #menu-link-2, #menu-link-3, #menu-link-4, #menu-link-5, #menu-link-6 {
+					color: white;
+				}
+				.modal-dialog {
+					width: 100%;
+					height: 100%;
+					margin: 0;
+					padding: 0;
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+				}
+
+				.modal-content {
+					height: auto;
+					min-height: 100%;
+					border-radius: 0;
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+				}
+				a, a:hover, a:active, a:visited {
+					text-decoration:none;
+				}
+				body.modal-open, body.modal-close {
+					overflow: visible;
+				}
+				#bigx {
+					position: absolute;
+					font-size: 100%;
+					bottom: 2.5%;
+					width: 40%;
+					left: 30%;
+				}
+				#floating_alert_ope {
+					position: absolute;
+					bottom: 10%;
+					left: 25%;
+					width: 50%;
+					z-index: 10;
+					margin: auto;
+				}
+				#chart-tableWrapper {
+					height: 90%;
+					width: 100%;
+					margin: 0;
+					padding: 0;
+					text-align: center;
+				}
+				#directions-panelWrapper {
+					height: 90%;
+					width: 100%;
+					margin: 0;
+					padding: 0;
+					text-align: center;
+				}
+				#chart-canvasWrapper {
+					height: 90%;
+					width: 100%;
+					margin: 0;
+					padding: 0;
+					text-align: center;
+				}
+				#floating_alert_nogeo {
+					position: absolute;
+					top: 10%;
+					left: 25%;
+					width: 50%;
+					z-index: 10;
+					margin: auto;
+				}
+				#floating_alert_yesgeo {
+					position: absolute;
+					top: 10%;
+					left: 25%;
+					width: 50%;
+					z-index: 10;
+					margin: auto;
+				}
+				table {
+					margin: auto;
+					text-align: center;
+				}
+				th {
+					text-align: center;
+				}
+				.modal-body {
+					padding: 0;
+				}
+				.star-primary {
+					margin: 5px;
+				}
+				
+				@media all and (max-width: 767px){
+					@media screen and (orientation: landscape){
+						.myBtn {
+							min-height: 1px;
+							margin-left: 7.5%;
+							width: 18%;
+							max-width: 30vh;
+						}
+						.modal-content-info {
+							width: 100%;
+							min-height: 100%;
+							border-radius: 0;
+							padding-left: 0 !important;
+							padding-right: 0 !important;
+						}
+					}
+					@media screen and (orientation: portrait){
+						.myBtn {
+							min-height: 1px;
+							margin-left: 2%;
+							width: 47%;
+							max-width: 23vh;
+						}
+					}
+				}
+				@media all and (min-width: 768px) {
+					.myBtn {
+						min-height: 1px;
+						margin-left: 2.5%;
+						width: 30%;
+						max-width: 30vh;
+					}
+				}
+				@media all and (min-width: 992px){
+					.myBtn {
+						min-height: 1px;
+						margin-left: 2.5%;
+						width: 30%;
+						max-width: 40vh;
+					}
+				}
+				@media all and (min-width: 1200px){
+					.myBtn {
+						min-height: 1px;
+						margin-left: 1.428%;
+						width: 15%
+					}
+				}
+					
+				hr.star-light, hr.star-primary {
+					padding: 0;
+					border: none;
+					border-top: solid 5px;
+					text-align: center;
+					max-width: 250px;
+					margin: 25px auto 30px;
+				}
+				hr.star-light:after, hr.star-primary:after {
+					content: "\f005";
+					font-family: FontAwesome;
+					display: inline-block;
+					position: relative;
+					top: -0.8em;
+					font-size: 2em;
+					padding: 0 0.25em;
+				}
+				hr.star-light {
+					border-color: white;
+				}
+				hr.star-light:after {
+					background-color: #18BC9C;
+					color: white;
+				}
+				hr.star-primary {
+					border-color: #2C3E50;
+				}
+				hr.star-primary:after {
+					background-color: white;
+					color: #2C3E50;
+				}
+				
+				.floating-label-form-group {
+					position: relative;
+					margin-bottom: 0;
+					padding-bottom: 0.5em;
+					border-bottom: 1px solid #eeeeee;
+				}
+				.floating-label-form-group input, .floating-label-form-group textarea {
+					z-index: 11;
+					position: relative;
+					padding-right: 0;
+					padding-left: 0;
+					border: none;
+					border-radius: 0;
+					font-size: 1.5em;
+					background: none;
+					box-shadow: none !important;
+					resize: none;
+				}
+				.floating-label-form-group label {
+					display: block;
+					z-index: 0;
+					position: relative;
+					top: 2em;
+					margin: 0;
+					font-size: 0.85em;
+					line-height: 1.764705882em;
+					vertical-align: middle;
+					vertical-align: baseline;
+					opacity: 0;
+					-webkit-transition: top 0.3s ease,opacity 0.3s ease;
+					-moz-transition: top 0.3s ease,opacity 0.3s ease;
+					-ms-transition: top 0.3s ease,opacity 0.3s ease;
+					transition: top 0.3s ease,opacity 0.3s ease;
+				}
+				.floating-label-form-group:not(:first-child) {
+					padding-left: 14px;
+					border-left: 1px solid #eeeeee;
+				}
+				.floating-label-form-group-with-value label {
+					top: 0;
+					opacity: 1;
+				}
+				.floating-label-form-group-with-focus label {
+					color: #18BC9C;
+				}
+				form .row:first-child .floating-label-form-group {
+					border-top: 1px solid #eeeeee;
+				}
+				footer {
+					color: white;
+				}
+				footer h3 {
+					margin-bottom: 30px;
+				}
+				footer .footer-above {
+					padding-top: 50px;
+					background-color: #004379;
+				}
+				footer .footer-col {
+					margin-bottom: 50px;
+				}
+				footer .footer-below {
+					padding: 25px 0;
+					background-color: #006eb8;
+				}
+
+				.btn-social {
+					display: inline-block;
+					height: 50px;
+					width: 50px;
+					border: 2px solid white;
+					border-radius: 100%;
+					text-align: center;
+					font-size: 20px;
+					line-height: 45px;
+				}
+				
+				.vcenter {
+					display: inline-block;
+					vertical-align: middle;
+					float: none;
+				}
+				
+				/* sideInfo */
+				/* The side navigation menu */
+				#infoModal {
+					/* display: none; */
+					height: 100%; /* 100% Full-height */
+					width: 0%; /* 0 width - change this with JavaScript */
+					position: absolute; /* Stay in place */ 
+					z-index: 12; /* Stay on top */ 
+					top: 0; 
+					left: 0; 
+					background-color: #006eb8; /* Blue */
+					overflow-x: hidden; /* Disable horizontal scroll */
+					overflow-y: auto;
+					padding-top: 50px; /* Place content 50px from the top */
+					transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+				}
+
+				/* The navigation menu links */
+				#infoModal a {
+					/* padding: 8px 8px 8px 32px; */
+					text-decoration: none;
+					/* font-size: 25px; */
+					color: #006eb8;
+					/* display: block;  */
+					transition: 0.3s
+				}
+
+				/* When you mouse over the navigation links, change their color */
+				#infoModal a:hover, .offcanvas a:focus{
+					color: #004379;
+				}
+
+				/* Position and style the close button (top right corner) */
+				#closebtn {
+					/* position: absolute; */
+					width: 5%;
+					top: 0%;
+					right: 2%;
+					z-index: 13;
+					display: none;
+					/* font-size: 36px; */
+					/* margin-left: 50px; */
+				}
+				#closebtn2 {
+					position: absolute;
+					top: 50%;
+					left: 2.5%;
+					z-index: 13;
+					/*transform: translate(-50%, -50%); */
+					padding: 1%;
+					vertical-align: middle;
+					text-align: center;
+					/* font-size: 36px; */
+					/* margin-left: 50px; */
+				}
+				#instructionButton {
+					position: absolute;
+					top: 17.5%;
+					right: 2.5%;
+					z-index: 13;
+					/*transform: translate(-50%, -50%); */
+					padding: 1%;
+					vertical-align: middle;
+					text-align: center;
+					/* font-size: 36px; */
+					/* margin-left: 50px; */
+				}
+				/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+				main {
+					transition: margin-left .5s;
+					/* padding: 20px; */
+				}
+				
+				#mapDiv {
+					position: absolute;
+					top: 0;
+					right: 0;
+					height: 100%;
+					width: 100%;
+					margin: 0;
+					padding: 50px 0 0 0;
+					text-align: center;
+					transition: width .5s;
+					transition: margin-left .5s;
+					/* padding: 20px; */
+				}
+
+				/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+				@media screen and (max-height: 450px) {
+					#infoModal {padding-top: 50px;}
+					#infoModal a {font-size: 18px;}
+				}
+				#contenedorInfo {
+					max-height: 100%;
+					background-color: #ffffff;
+					transition: display 5s;
+					max-height: 100%;
+					z-index: 12;
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+				}
+				#infoContent {
+					width: 100%;
+					max-height: 100%;
+					margin: 0;
+					padding: 0;
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+					text-align: center;
+					transition: width .5s;
+					transition: margin-left .5s;
+				}
+				
+				/* The snackbar - position it at the bottom and in the middle of the screen */
+				#mySnackBar {
+					visibility: hidden; /* Hidden by default. Visible on click */
+					min-width: 250px; /* Set a default minimum width */
+					/* margin-left: -125px; /* Divide value of min-width by 2 */
+					background-color: #333; /* Black background color */
+					color: #ffffff; /* White text color */
+					text-align: center; /* Centered text */
+					border-radius: 2px; /* Rounded borders */
+					padding: 16px; /* Padding */
+					position: fixed; /* Sit on top of the screen */
+					z-index: 20; /* Add a z-index if needed */
+					left: 50%; /* Center the snackbar */
+					bottom: 30px; /* 30px from the bottom */
+					margin-right: -50%;
+					transform: translate(-50%, -50%);
+				}
+				
+				/* Show the snackbar when clicking on a button (class added with JavaScript) */
+				#mySnackBar.show {
+					visibility: visible; /* Show the snackbar */
+					/* Add animation: Take 0.5 seconds to fade in and out the snackbar. However, delay the fade out process for 2.5 seconds */
+					-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+					animation: fadein 0.5s, fadeout 0.5s 4.5s;
+				}
+
+				/* Animations to fade the snackbar in and out */
+				@-webkit-keyframes fadein {
+					from {
+						bottom: 0;
+						opacity: 0;
+					} 
+					to {
+						bottom: 30px;
+						opacity: 1;
+					}
+				}
+
+				@keyframes fadein {
+					from {
+						bottom: 0;
+						opacity: 0;
+					}
+					to {
+						bottom: 30px;
+						opacity: 1;
+					}
+				}
+
+				@-webkit-keyframes fadeout {
+					from {
+						bottom: 30px;
+						opacity: 1;
+					} 
+					to {
+						bottom: 0;
+						opacity: 0;
+					}
+				}
+
+				@keyframes fadeout {
+					from {
+						bottom: 30px;
+						opacity: 1;
+					}
+					to {
+						bottom: 0;
+						opacity: 0;
+					}
+				}
+				/* The snackbar - position it at the bottom and in the middle of the screen */
+				#mySnackBar3 {
+					visibility: hidden; /* Hidden by default. Visible on click */
+					min-width: 250px; /* Set a default minimum width */
+					/* margin-left: -125px; /* Divide value of min-width by 2 */
+					background-color: #333; /* Black background color */
+					color: #ffffff; /* White text color */
+					text-align: center; /* Centered text */
+					border-radius: 2px; /* Rounded borders */
+					padding: 16px; /* Padding */
+					position: fixed; /* Sit on top of the screen */
+					z-index: 20; /* Add a z-index if needed */
+					left: 50%; /* Center the snackbar */
+					bottom: 30px; /* 30px from the bottom */
+					margin-right: -50%;
+					transform: translate(-50%, -50%);
+				}
+				
+				/* Show the snackbar when clicking on a button (class added with JavaScript) */
+				#mySnackBar3.show {
+					visibility: visible; /* Show the snackbar */
+					/* Add animation: Take 0.5 seconds to fade in and out the snackbar. However, delay the fade out process for 2.5 seconds */
+					-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+					animation: fadein 0.5s, fadeout 0.5s 4.5s;
+				}
+				/* Style the list */
+				ul.tab {
+					list-style-type: none;
+					margin: 0;
+					padding: 0;
+					overflow: hidden;
+					border: 1px solid #ccc;
+					background-color: #f1f1f1;
+				}
+
+				/* Float the list items side by side */
+				ul.tab li {
+					float: left;
+				}
+
+				/* Style the links inside the list items */
+				ul.tab li a {
+					display: inline-block;
+					color: black;
+					text-align: center;
+					padding: 14px 16px;
+					text-decoration: none;
+					transition: 0.3s;
+					font-size: 100%;
+				}
+
+				/* Change background color of links on hover */
+				ul.tab li a:hover {background-color: #ddd;}
+
+				/* Create an active/current tablink class */
+				ul.tab li a:focus, .active {background-color: #ccc;}
+
+				/* Style the tab content */
+				.tabcontent {
+					display: none;
+					padding: 6px 12px;
+					border: 1px solid #ccc;
+					border-top: none;
+					-webkit-animation: fadeEffect 1s;
+					animation: fadeEffect 1s; /* Fading effect takes 1 second */
+				}
+				@-webkit-keyframes fadeEffect {
+					from {opacity: 0;}
+					to {opacity: 1;}
+				}
+
+				@keyframes fadeEffect {
+					from {opacity: 0;}
+					to {opacity: 1;}
+				}
+				/* Style the buttons that are used to open and close the accordion panel */
+				button.accordion {
+					background-color: #eee;
+					color: #444;
+					cursor: pointer;
+					padding: 18px;
+					width: 100%;
+					text-align: left;
+					border: none;
+					outline: none;
+					transition: 0.4s;
+				}
+
+				/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+				button.accordion.active, button.accordion:hover {
+					background-color: #ddd;
+				}
+
+				/* Style the accordion panel. Note: hidden by default */
+				div.panel {
+					padding: 0 18px;
+					background-color: white;
+					max-height: 0;
+					overflow: hidden;
+					transition: 0.6s ease-in-out;
+					opacity: 0;
+					margin: 0;
+				}
+
+				/* The "show" class is added to the accordion panel when the user clicks on one of the buttons. This will show the panel content */
+				div.panel.show {
+					opacity: 1;
+					max-height: 500px; /* Whatever you like, as long as its more than the height of the content (on all screen sizes) */
+				}
+				button.accordion:after {
+					content: '\02795'; /* Unicode character for "plus" sign (+) */
+					font-size: 13px;
+					color: #777;
+					float: right;
+					margin-left: 5px;
+				}
+
+				button.accordion.active:after {
+					content: "\2796"; /* Unicode character for "minus" sign (-) */
+				}
+				.gm-style-iw {
+					/*width: 350px !important;*/
+					top: 50% !important;
+					left: 20% !important;
+					background-color: #fff;
+					box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+					border: 1px solid rgba(72, 181, 233, 0.6);
+					border-radius: 75%;
+				}
+			</style>
+
+			<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+			<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+			<!--[if lt IE 9]>
+				<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+				<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+			<![endif]-->
+		
+		</head>
+		<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+			<!-- Navigation -->
+			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div class="container-fluid nav-wrapper">
+					<div class="navbar-header page-scroll">
+						
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar" id="icon-bar-1"></span>
+							<span class="icon-bar" id="icon-bar-2"></span>
+							<span class="icon-bar" id="icon-bar-3"></span>
+						</button>
+						<a class="navbar-brand page-scroll" href="#page-top" id="mainNavLogo" onclick="newOperadora()">  <i class="fa fa-home"></i>  Encuentra tu CAC  </a>
+					</div>
+
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse navbar-ex1-collapse">
+						<ul class="nav navbar-nav">
+							<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+							<li class="hidden"><a class="page-scroll" href="#page-top"></a></li>
+							<li><a href="#firstSection" class="page-scroll" id="menu-link-1">Operador <i class="fa fa-trophy" style="font-size: 150%;"></i></a></li>
+							<li><a href="#secondSection" class="page-scroll" id="menu-link-2">Mapa <i class="fa fa-map-marker" style="font-size: 150%;"></i></a></li>
+							<li><a href="#thirdSection" class="page-scroll" id="menu-link-3">Clasificacion <i class="fa fa-trophy" style="font-size: 150%;"></i></a></li>
+							<li><a href="#fourthSection" class="page-scroll" id="menu-link-4">Hoy <i class="fa fa-bar-chart" style="font-size: 150%;"></i></a></li>
+							<li><a href="#fifthSection" class="page-scroll" id="menu-link-5">Ruta <i class="fa fa-road" style="font-size: 150%;"></i></a></li>
+							<li><a href="#sixthSection" class="page-scroll" id="menu-link-6">Contacto <i class="fa fa-paper-plane" style="font-size: 150%;"></i></a></li>
+						</ul>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+				<!-- /.container -->
+			</nav>
+			<!-- Intro Header -->
+			<header id="headerSection" class="container-fluid">
+				<div id="background-blur-layer"></div>
+				<div id="header-wrapper" class="container-fluid">
+					<div id="header-text" class="container-fluid">
+						<div id="intro-lead-in" class="container-fluid vcenter" style="display: block;"><img id="logo" src="img/logo_blanc.png"  border=0 alt="OSIPTEL" class="img-responsive" style="display: block; margin-left: auto; margin-right: auto" height="400" width="400" align="middle"></div>
+						<div id="intro-heading" class="container-fluid vcenter">ENCONTRAREMOS EL CENTRO DE ATENCION MAS RAPIDO Y CERCANO.</div>
+					</div>
+					<div class="container-fluid btn-group">
+						<button type="button" class="btn btn-lg btn-md btn-sm btn-primary" data-toggle="modal" data-target="#instructionModal"><i class="fa fa-info-circle" style="font-size: 250%;"></i></button>
+						<a href="#firstSection" id="comenzarButton" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-primary">Comenzar</a>
+					</div>
+				</div>
+			</header>
+			
+			<!-- Main Content -->
+			<main class="container-fluid">
+				<section id="firstSection" class="container-fluid section-container">
+					<div class="container-fluid" style="width: 100%; height: 90%;">
+						<div id="operadoraSelect" class="container-fluid">SELECCIONA A TU OPERADOR.</div>
+						<button type="button" id="Operadora1" class="btn btn-default myBtn"><img data-toggle="button" aria-pressed="false" src="img/bitel_ico.png" class="img-fluid" alt="BITEL" style="width: 100%; height: 100%;"></button>
+						<button type="button" id="Operadora2" class="btn btn-default myBtn"><img data-toggle="button" aria-pressed="false" src="img/claro_ico.jpg" class="img-fluid" alt="CLARO" style="width: 100%; height: 100%;"></button>
+						<button type="button" id="Operadora3" class="btn btn-default myBtn"><img data-toggle="button" aria-pressed="false" src="img/entel_ico.png" class="img-fluid" alt="ENTEL" style="width: 100%; height: 100%;"></button>
+						<button type="button" id="Operadora4" class="btn btn-default myBtn"><img data-toggle="button" aria-pressed="false" src="img/movistar_ico.jpg" class="img-fluid" alt="MOVISTAR" style="width: 100%; height: 100%;"></button>
+						<button type="button" id="Operadora5" class="btn btn-default myBtn"><img data-toggle="button" aria-pressed="false" src="img/tuenti_ico.png" class="img-fluid" alt="TUENTI" style="width: 100%; height: 100%;"></button>
+						<button type="button" id="Operadora6" class="btn btn-default myBtn"><img data-toggle="button" aria-pressed="false" src="img/virgin_ico.png" class="img-fluid" alt="VIRGIN" style="width: 100%; height: 100%;"></button>
+					</div>
+					<div class="container-fluid btn-group">
+						<a href="#headerSection" id="primerRegresar" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-default" style="color: #0087cc;">Regresar</a>
+						<a href="#secondSection" id="primerSiguiente" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-default" style="color: #0087cc;">Siguiente</a>
+					</div>
+				</section>
+				<section id="secondSection" class="container-fluid section-container">
+					<div class="row" style="padding: 0; padding-left: 0 !important; padding-right: 0 !important; margin: 0 !important;">
+						<div class="sideInfo" id="infoModal">
+							<div class="container-fluid" id="contenedorInfo" style="display: none; overflow-y: auto;">
+								<!-- <a href="javascript:void(0)" id="closebtn" onclick="closeSideInfo()" style="font-size: 200%;"><i class="fa fa-chevron-circle-left"></i>Cerrar</a> -->
+								<h2 id="cac-title"></h2>
+								<hr class="star-primary">
+								<img id="cac_image" src="http://s16.postimg.org/5gky7skt1/Captura01.png" class="img-responsive img-centered" alt=""><br>
+								<div class="container-fluid" id='infoContent'>
+									<p id="dia-y-hora"></p><br>
+									<b>TIEMPO DE ESPERA PROMEDIO: </b><br>
+									<b id="tiempo-promedio" style="font-size: 200%"></b><br>
+									<b><a href="#fourthSection" class="page-scroll">¿OTRO HORARIO?</a></b><br>
+									<b>¿QUE TRAMITE VAS A REALIZAR?</b><br>
+									<ul class="tab">
+										<li><a href="javascript:void(0)" class="tablinks" onclick="openTiempo(event, 'alta')">Alta</a></li>
+										<li><a href="javascript:void(0)" class="tablinks" onclick="openTiempo(event, 'baja')">Baja</a></li>
+										<li><a href="javascript:void(0)" class="tablinks" onclick="openTiempo(event, 'consulta')">Consulta</a></li>
+										<li><a href="javascript:void(0)" class="tablinks" onclick="openTiempo(event, 'reclamo')">Reclamo</a></li>
+									</ul>
+									<div id="alta" class="tabcontent">
+										<b id="tiempo-esp-alta" style="font-size: 200%"></b>
+									</div>
+									<div id="baja" class="tabcontent">
+										<b id="tiempo-esp-baja" style="font-size: 200%"></b>
+									</div>
+									<div id="consulta" class="tabcontent">
+										<b id="tiempo-esp-consulta" style="font-size: 200%"></b>
+									</div>
+									<div id="reclamo" class="tabcontent">
+										<b id="tiempo-esp-reclamo" style="font-size: 200%"></b>
+									</div>
+									<b>TIEMPO TOTAL: </b><br>
+									<b id="tiempo-total" style="font-size: 200%"><i class="fa fa-question-circle-o"></i></b>
+									<div id="Reclamo" class="tabcontent">
+										<b id="tiempo-esp-reclamo" style="font-size: 200%"></b>
+									</div>
+									<button class="accordion">Direccion y Horario</button>
+									<div class="panel">
+										<b>DIRECCION: </b>
+										<p id="direccion"></p>
+										<b>HORARIO DE ATENCION (L-V): </b>
+										<p id="horario"></p>
+										<b>HORARIO DE ATENCION (S): </b>
+										<p id="horario-sabados"></p>
+										<b>HORARIO DE ATENCION (D): </b>
+										<p id="horario-domingos"></p>
+									</div>
+									<button class="accordion" style="display:none">Indicadores de Calidad de Atencion</button>
+									<div class="panel" style="display:none">
+										<b><a href="https://www.osiptel.gob.pe/Archivos/ResolucionAltaDireccion/ConsejoDirectivo/Res127-2013-CD.pdf" target="_blank">INDICADORES DE CALIDAD DE ATENCION A USUARIOS</a></b><br>
+										<b data-toggle="tooltip" data-placement="left" title="DAP: Porcentaje de Desercion en Atencion Presencial">DAP: </b>
+										<b id="dap" data-toggle="tooltip" data-placement="right" title="DAP: Porcentaje de Desercion en Atencion Presencial"></b><br>
+										<b data-toggle="tooltip" data-placement="left" title="CSA: Porcentaje de Caidas del Sistema de Atencion">CSA: </b>
+										<b id="csa" data-toggle="tooltip" data-placement="right" title="CSA: Porcentaje de Caidas del Sistema de Atencion"></b><br>
+										<b data-toggle="tooltip" data-placement="left" title="TEAP: Porcentaje de Tiempo de Espera para cualquier tramite en Atencion Presencial menor a 15 minutos.">TEAP: </b>
+										<b id="teap" data-toggle="tooltip" data-placement="right" title="TEAP: Porcentaje de Tiempo de Espera para cualquier tramite en Atencion Presencial menor a 15 minutos."></b><br>
+										<b data-toggle="tooltip" data-placement="left" title="TEAP para contratacion de servicios">TEAP-ALTAS: </b>
+										<b id="teap-altas" data-toggle="tooltip" data-placement="right" title="TEAP para contratacion de servicios"></b><br>
+										<b data-toggle="tooltip" data-placement="left" title="TEAP para anulacion de servicios">TEAP-BAJAS: </b>
+										<b id="teap-bajas" data-toggle="tooltip" data-placement="right" title="TEAP para anulacion de servicios"></b><br>
+										<b data-toggle="tooltip" data-placement="left" title="TEAP para consultas">TEAP-CONSULTAS : </b>
+										<b id="teap-consultas" data-toggle="tooltip" data-placement="right" title="TEAP para consultas"></b><br>
+										<b data-toggle="tooltip" data-placement="left" title="TEAP para reclamos">TEAP-RECLAMOS : </b>
+										<b id="teap-reclamos" data-toggle="tooltip" data-placement="right" title="TEAP para reclamos"></b><br>
+									</div>
+									<b><a href="#fifthSection" class="page-scroll">TIEMPO EN AUTO APROXIMADO</a></b><br>
+									<b id="tiempo-auto" style="font-size: 200%"></b><br>
+									<a href="javascript:void(0)" onclick="closeSideInfo()" id="closebtn2" style="color: #ffffff; background-color: #006eb8; border-radius: 25%;"><i class="fa fa-chevron-circle-left" style="font-size: 300%; display: inline-block; vertical-align: middle;"></i>Cerrar</a>
+								</div>
+							</div>
+						</div>
+						<div id="mapDiv" class="container-fluid">
+							<div id="map-canvas" class="container-fluid"></div>
+						</div>
+						<div class="container-fluid" id="mapNextButtonWrapper">
+							<div class="btn-group">
+								<a href="#firstSection" id="segundoRegresar" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-primary">Regresar</a>
+								<a href="#thirdSection" id="segundoSiguiente" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-primary">Siguiente</a>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section id="thirdSection" class="container-fluid section-container">
+					<div id="chart-tableWrapper" class="container-fluid" style="overflow: auto;">
+						<div id="chart-table" class="container-fluid" style="overflow: auto;"></div>
+					</div>
+					<div class="container-fluid btn-group">
+						<a href="#secondSection" id="tercerRegresar" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-default" style="color: #0087cc;">Regresar</a>
+						<a href="#fourthSection" id="tercerSiguiente" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-default" style="color: #0087cc;">Siguiente</a>
+					</div>
+				</section>
+				<section id="fourthSection" class="container-fluid section-container">
+					<div id="chart-canvasWrapper" class="container-fluid" style="overflow: auto;">
+						<div id="chart-canvas" class="container-fluid"></div>
+					</div>
+					<div class="container-fluid btn-group">
+						<a href="#thirdSection" id="cuartoRegresar" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-default" style="color: #0087cc;">Regresar</a>
+						<a href="#fifthSection" id="cuartoSiguiente" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-default" style="color: #0087cc;">Siguiente</a>
+					</div>
+				</section>
+				<section id="fifthSection" class="container-fluid section-container">
+					<div id="directions-panelWrapper" class="container-fluid" style="overflow: auto; text-align: center;">
+						<div id="directions-panel" class="container-fluid col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1" style="text-align: center;"></div>
+					</div>
+					<div class="container-fluid btn-group">
+						<a href="#fourthSection" id="quintoRegresar" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-primary">Regresar</a>
+						<a href="#sixthSection" id="quintoSiguiente" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-primary">Siguiente</a>
+					</div>
+				</section>
+				<section id="sixthSection" class="container-fluid">
+					<div class="container" style="min-height: 90%;">
+						<div class="row">
+							<div class="col-lg-12 text-center">
+								<h2>Contactanos</h2>
+								<hr class="star-primary">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-8 col-lg-offset-2">
+								<!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
+								<!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
+								<form name="sentMessage" id="contactForm" novalidate>
+									<div class="row control-group">
+										<div class="form-group col-xs-12 floating-label-form-group controls">
+											<label>Nombre</label>
+											<input type="text" class="form-control" placeholder="Nombre" id="name" required data-validation-required-message="Por favor ingresa tu nombre.">
+											<p class="help-block text-danger"></p>
+										</div>
+									</div>
+									<div class="row control-group">
+										<div class="form-group col-xs-12 floating-label-form-group controls">
+											<label>Correo Electronico</label>
+											<input type="email" class="form-control" placeholder="Correo Electronico" id="email" required data-validation-required-message="Por favor ingresa tu correo electronico.">
+											<p class="help-block text-danger"></p>
+										</div>
+									</div>
+									<div class="row control-group">
+										<div class="form-group col-xs-12 floating-label-form-group controls">
+											<label>Numero de Telefono</label>
+											<input type="tel" class="form-control" placeholder="Numero de Telefono" id="phone" required data-validation-required-message="Por favor ingresa tu numero de telefono.">
+											<p class="help-block text-danger"></p>
+										</div>
+									</div>
+									<div class="row control-group">
+										<div class="form-group col-xs-12 floating-label-form-group controls">
+											<label>Mensaje</label>
+											<textarea rows="5" class="form-control" placeholder="Mensaje" id="message" required data-validation-required-message="Por favor ingresa tu comentario."></textarea>
+											<p class="help-block text-danger"></p>
+										</div>
+									</div>
+									<br>
+									<div id="success"></div>
+									<div class="row">
+										<div class="form-group col-xs-12">
+											<button type="submit" class="btn btn-primary btn-lg">Enviar</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="container-fluid btn-group">
+						<a href="#fifthSection" id="sextoRegresar" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-primary">Regresar</a>
+						<a href="#footer-section" id="sextoSiguiente" class="page-scroll container-fluid btn btn-lg btn-md btn-sm btn-primary">Siguiente</a>
+					</div>
+				</section>
+				
+				<!-- Footer -->
+				<footer class="container-fluid" id="footer-section">
+					<div class="footer-above">
+						<div class="container">
+							<div class="row">
+								<div class="footer-col col-md-4">
+									<h3>Ubicacion:</h3>
+									<p>Calle de la Prosa 136 - San Borja
+										<br>Lima - Peru</p>
+								</div>
+								<div class="footer-col col-md-4">
+									<h3>En la web:</h3>
+									<ul class="list-inline">
+										<li>
+											<a href="https://www.facebook.com/OsiptelOficial" target="_blank" class="btn-social btn-outline" style="color: white"><i class="fa fa-fw fa-facebook"></i></a>
+										</li>
+										<li>
+											<a href="http://www.youtube.com/user/OsiptelOficial" target="_blank" class="btn-social btn-outline" style="color: white"><i class="fa fa-fw fa-youtube"></i></a>
+										</li>
+										<li>
+											<a href="https://twitter.com/OSIPTEL" target="_blank" class="btn-social btn-outline" style="color: white"><i class="fa fa-fw fa-twitter"></i></a>
+										</li>
+										<li>
+											<a href="https://www.linkedin.com/company/osiptel" target="_blank" class="btn-social btn-outline" style="color: white"><i class="fa fa-fw fa-linkedin"></i></a>
+										</li>
+										<li>
+											<a href="https://www.flickr.com/photos/osiptel" target="_blank" class="btn-social btn-outline" style="color: white"><i class="fa fa-fw fa-flickr"></i></a>
+										</li>
+									</ul>
+								</div>
+								<div class="footer-col col-md-4">
+									<h3>Acerca de EncuentraTuCAC</h3>
+									<p>Es un piloto de plataforma que permita la ubicacion de un centro de atencion de la operadora de su eleccion. Recomendamos la utilizacion de Mozilla Firefox para .</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="footer-below">
+						<div class="container">
+							<div class="row">
+								<div class="col-lg-12">Copyright &copy; consultame.xyz 2016</div>
+							</div>
+						</div>
+					</div>
+				</footer>
+				
+			</main>
+			
+			<div id="mySnackBar">Recuerda que: en caso de sismos es importante guardar la calma, comunicarse por medio de mensajes de texto y no congestionar la red con multiples llamadas.</div>
+			<div id="mySnackBar2">Recuerda que: en caso de sismos es importante guardar la calma, comunicarse por medio de mensajes de texto y no congestionar la red con multiples llamadas.</div>
+			<div id="mySnackBar3">Recuerda que: Apenas llegues a un centro de atencion debes exigir tu ticket de atencion, y los tiempos de espera no deben ser mayores a 15 minutos.</div>
+			
+			<!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+			<div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
+				<a class="btn btn-primary" href="#page-top">
+					<i class="fa fa-chevron-up"></i>
+				</a>
+			</div>
+			
+			<!-- Modals -->
+			<div class="myModal modal fade" id="instructionModal" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-content">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-8 col-lg-offset-2">
+								<div class="modal-body">
+									<h3>Instrucciones<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="font-size: 150%;">&times;</span></button></h3>
+									<hr class="star-primary">
+									<p style="font-size: 90%">Para encontrar el centro de atencion al cliente mas rapido y mas cercano siga los siguientes pasos:</p>
+									<ul class="list-inline item-details" style="font-size: 90%">
+										<li>1. Seleccione su operador. Se puede acceder a este paso desde el menu <strong>Operador</strong>.</li>
+										<li>
+											2. Haga clic en su posicion y apareceran los 10 CAC mas cercanos. <strong>Haz clic en ellos para ver su informacion y como llegar.</strong>
+											Se puede acceder a este paso desde el menu <strong>Mapa</strong>.
+										</li>
+										<li>3. Alternativamente, los puedes ver en un cuadro. Se puede acceder a este paso desde el menu <strong>Clasificacion</strong>.</li>
+										<li>4. Escoge el mejor horario. Busca la hora del dia con menor tiempo de atencion. Se puede acceder a este paso desde el menu <strong>Hoy</strong>.</li>
+										<li>5. Sigue la ruta propuesta. Se puede acceder a este paso desde el menu <strong>Ruta</strong>.</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<button type="button" class="btn btn-default btn-lg btn-md btn-sm btn-xs" data-dismiss="modal" id="bigx"><i class="fa fa-times"></i> Cerrar</button>
+				</div>
+			</div>
+			<div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-content">
+					<div class="close-modal" data-dismiss="modal">
+						<div class="lr">
+							<div class="rl">
+							</div>
+						</div>
+					</div>
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-8 col-lg-offset-2">
+								<div class="modal-body">
+									<h2>Project Title</h2>
+									<hr class="star-primary">
+									<img src="#" class="img-responsive img-centered" alt="">
+									<p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+									<ul class="list-inline item-details">
+										<li>Client:
+											<strong><a href="#">Start Bootstrap</a>
+											</strong>
+										</li>
+										<li>Date:
+											<strong><a href="#">April 2014</a>
+											</strong>
+										</li>
+										<li>Service:
+											<strong><a href="#">Web Development</a>
+											</strong>
+										</li>
+									</ul>
+									<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- jQuery -->
+			<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+			
+			<!-- jQuery easing-->
+			<script type="text/javascript" src="js/jquery.easing.min.js"></script>
+			
+			<!-- Bootstrap Core JavaScript -->
+			<script src="js/bootstrap.min.js"></script>
+			
+			<!--Load the Google Loader -->
+			<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+			
+			<!-- Contact Form JavaScript -->
+			<script src="js/jqBootstrapValidation.js"></script>
+			<script src="js/contact_me.js"></script>
+			
+			<!-- Function Definitions JavaScript -->
+			<script src="js/etcac.js"></script>
+			
+			<!-- Function Definitions JavaScript -->
+			<script>
+				
+				bootstrap_alertwarning = function (message, alert, timeout, where, what) {
+						$('<div id="floating_alert_' + what + '" class="alert alert-' + alert +
+						' fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'
+						+ message + '&nbsp;&nbsp;</div>').appendTo(where);
+						if (timeout){
+							setTimeout(function () {
+								$("#floating_alert_" + what).alert('close');
+							}, timeout);
+						}
+					}
+				function closeModal (what){
+					$("#floating_alert_" + what).alert('close');
+				}
+				
+				function  queryTable() {
+					var queryText = encodeURIComponent(
+						"SELECT 'AGENCIA', 'HORADELDIA', 'TIEMPO', 'LATITUD', 'LONGITUD', 'DIRECCION', 'HORARIO LUNES A VIERNES', 'HORARIO SABADO', 'HORARIO DOMINGO', 'DAP', 'CSA', 'TEAP TOTAL', 'TEAP ALTAS', 'TEAP BAJAS', 'TEAP CONSULTAS', 'TEAP RECLAMOS', 'TIEMPO DE ATENCION ALTA', 'TIEMPO DE ATENCION BAJA', 'TIEMPO DE ATENCION CONSULTA', 'TIEMPO DE ATENCION RECLAMO' FROM " +
+			            FT_TableID + " WHERE 'OPERADOR'='" + ope + "' AND 'DIA'='" + setDia(days) + "' AND 'HORA'='" + setHora() +
+			            "' ORDER BY ST_DISTANCE('LATITUD', LATLNG(" + userLatlng1.lat() + "," + userLatlng1.lng() + ")) LIMIT 10"
+					);
+					var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + queryText);
+					//set the callback function
+					query.send(getData);
+				}
+				
+				function  readyQuery() {
+					var dptQueryText = encodeURIComponent("SELECT 'NOMBRE', 'POLIGONO', 'LATITUD', 'LONGITUD' FROM " + '1qZcIQaeTwmoieYfIzJSDETK5TOeywX7f57PtGpFH');
+					var dptQuery = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + dptQueryText);
+					//set the callback function
+					dptQuery.send(dptDraw);
+					
+				}
+				
+				function drawBarGraph (agencia, dia) {
+					var queryTextColChart = encodeURIComponent("SELECT 'HORADELDIA', 'TIEMPO' FROM " + FT_TableID + " WHERE 'AGENCIA' = '" + agencia + "' AND 'DIA' = '" + setDia(days) + "' ORDER BY 'HORA'");
+					var queryColChart = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + queryTextColChart);
+					queryColChart.send(getDataColChart);
+				}
+				
+				function getData(response) {
+					if (!response) {
+						alert('Sin respuesta');
+						return;
+					}
+					if (response.isError()) {
+						alert('Error en query para Tabla de Clasificacion: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+						return;
+					} 
+					FTresponse = response.getDataTable();
+					FTresponse2 = FTresponse.clone();
+					FTresponse.removeColumns(1, 1);
+					FTresponse.removeColumns(2, 2);
+					FTresponse.removeColumns(6, 7);
+					FTresponse.removeRows(5, 5);
+					dataForDataTable = FTresponse;
+					dataForDataTable.setColumnLabel(1, "ESPERA PROMEDIO");
+					dataForDataTable.setColumnLabel(3, "HORARIO (L-V)");
+					dataForDataTable.setColumnLabel(4, "HORARIO (S)");
+					dataForDataTable.setColumnLabel(5, "HORARIO (D)");
+					dataForDataTable.setColumnLabel(6, "ATENCION ALTA");
+					dataForDataTable.setColumnLabel(7, "ATENCION BAJA");
+					dataForDataTable.setColumnLabel(8, "ATENCION CONSULTA");
+					dataForDataTable.setColumnLabel(9, "ATENCION RECLAMO");
+					for (var t = 0; t < FTresponse.getNumberOfRows(); t++) {
+						dataForDataTable.setCell(t, 1, undefined, FTresponse.getFormattedValue(t, 1).split(":")[1] + " min");
+						dataForDataTable.setCell(t, 6, undefined, FTresponse.getFormattedValue(t, 6).split(":")[1] + " min");
+						dataForDataTable.setCell(t, 7, undefined, FTresponse.getFormattedValue(t, 7).split(":")[1] + " min");
+						dataForDataTable.setCell(t, 8, undefined, FTresponse.getFormattedValue(t, 8).split(":")[1] + " min");
+						dataForDataTable.setCell(t, 9, undefined, FTresponse.getFormattedValue(t, 9).split(":")[1] + " min");
+					}
+					var options = {
+						title: 'CAC mas cercanos',
+						showRowNumber: true,
+						width: document.getElementById("thirdSection").width,
+						height: document.getElementById("thirdSection").height,
+						alternatingRowStyle: true
+					};
+					chart = new google.visualization.Table(document.getElementById('chart-table'));
+					google.visualization.events.addListener(chart, 'select', selectHandler);
+					chart.draw(dataForDataTable, options);
+					setTableTooltip();
+					/*for (var tiw = 0; tiw < FTresponse2.getNumberOfRows(); tiw++) {
+						currTiwlocation = new google.maps.LatLng(FTresponse2.getValue(tiw, 3), FTresponse2.getValue(tiw, 4));
+						currTiwcontent = '<div class="iw_container">' +
+											'<div class="iw_content">' +
+												FTresponse2.getFormattedValue(tiw, 2).split(":").slice(1).join(":") +
+											'</div>' +
+										 '</div>';
+						addTimeInfowindow(currTiwlocation, currTiwcontent);
+					}*/
+				}
+				
+				function setTableTooltip () {
+					var thTags = document.getElementsByTagName("th");
+					var found;
+
+					for (var q = 0; q < thTags.length; q++) {
+						switch (thTags[q].textContent) {
+							case "DAP": {
+								thTags[q].setAttribute("data-toggle","tooltip");
+								thTags[q].setAttribute("data-placement","top");
+								thTags[q].setAttribute("title","DAP: Porcentaje de Desercion en Atencion Presencial.");
+								break;
+							}
+							case "CSA": {
+								thTags[q].setAttribute("data-toggle","tooltip");
+								thTags[q].setAttribute("data-placement","top");
+								thTags[q].setAttribute("title","CSA: Porcentaje de Caidas del Sistema de Atencion.");
+								break;
+							}
+							case "TEAP TOTAL": {
+								thTags[q].setAttribute("data-toggle","tooltip");
+								thTags[q].setAttribute("data-placement","top");
+								thTags[q].setAttribute("title","TEAP TOTAL: Porcentaje de Tiempo de Espera en Atencion Presencial para cualquier tramite menor a 15 minutos.");
+								break;
+							}
+							case "TEAP ALTAS": {
+								thTags[q].setAttribute("data-toggle","tooltip");
+								thTags[q].setAttribute("data-placement","top");
+								thTags[q].setAttribute("title","TEAP ALTAS: TEAP para subscripciones de contratos.");
+								break;
+							}
+							case "TEAP BAJAS": {
+								thTags[q].setAttribute("data-toggle","tooltip");
+								thTags[q].setAttribute("data-placement","top");
+								thTags[q].setAttribute("title","TEAP BAJAS: TEAP para anulaciones de contratos.");
+								break;
+							}
+							case "TEAP CONSULTAS": {
+								thTags[q].setAttribute("data-toggle","tooltip");
+								thTags[q].setAttribute("data-placement","top");
+								thTags[q].setAttribute("title","TEAP CONSULTAS: TEAP para consultas.");
+								break;
+							}
+							case "TEAP RECLAMOS": {
+								thTags[q].setAttribute("data-toggle","tooltip");
+								thTags[q].setAttribute("data-placement","top");
+								thTags[q].setAttribute("title","TEAP RECLAMOS: TEAP para reclamos.");
+								break;
+							}
+							default:
+								found = false;
+						}
+						
+					}
+				}
+				
+				function dptDraw (dptResponse) {
+					if (!dptResponse) {
+						alert('Sin respuesta');
+						return;
+					}
+					if (dptResponse.isError()) {
+						alert('Error en query para capa de poligonos : ' + dptResponse.getMessage() + ' ' + dptResponse.getDetailedMessage());
+						return;
+					} 
+					dptResponseFT = dptResponse.getDataTable();
+					for (i = 0; i < dptResponseFT.getNumberOfRows(); i++) {		
+						polyPos.push({lat: parseFloat(dptResponseFT.getValue(i, 2)), lng: parseFloat(dptResponseFT.getValue(i, 3))});
+						var polygonXMLParsed = parsePolygonXML (dptResponseFT.getValue(i, 1));
+						visualPolygonXML(polygonXMLParsed, i)
+					}
+				}
+				
+				function getDataColChart (responseColChart) {
+					if (!responseColChart) {
+						alert('Sin respuesta');
+						return;
+					}
+					if (responseColChart.isError()) {
+						alert('Error en query para Grafico de Columnas: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+						return;
+					} 
+					ColChartResponse = responseColChart.getDataTable();
+					drawVisualization(ColChartResponse);
+				}
+				
+				function drawVisualization(colChartResponse) {
+					var optionsColChart = {
+						title: 'Tiempo de Espera Promedio para el ' + currentAgency + 'para el ' + currentDay,
+						vAxis: {
+							title: "Tiempo de Espera en Minutos",
+							format: "mm:ss",
+						},
+						hAxis: {
+							title: "Horas del Dia",
+							format: "hh a",
+							viewWindowMode: 'maximized',
+						},
+						width: document.getElementById("fourthSection").width,
+						height: window.innerHeight * 0.75,
+						legend: {
+							position: "none",
+						}
+					};
+					var colChart = new google.visualization.ColumnChart(document.getElementById('chart-canvas'));
+					colChart.draw(colChartResponse, optionsColChart);
+				}
+				
+				function setDia (arrayofdays) {
+					var diaDeHoy= arrayofdays[todayDate.getDay()];
+					return diaDeHoy;
+				}
+				function setHora () {
+					if (todayDate.getHours() <= 9) {
+						horaDeHoy = 10;
+					}
+					else if (todayDate.getHours() >= 21) {
+						horaDeHoy = 21;
+					}
+					else {
+						horaDeHoy = todayDate.getHours();
+					}
+					return horaDeHoy;
+				}
+				
+				function selectHandler() {
+					//selectedItem.row: fila de tabla
+					displayElement(fourthSectionDOM);
+					displayElement(fifthSectionDOM);
+					var selectedItem = chart.getSelection()[0];
+					currentAgency = FTresponse2.getValue(selectedItem.row,0);
+					currentDay = setDia(days);
+					destinoLatlng1 = new google.maps.LatLng(FTresponse2.getValue(selectedItem.row,3), FTresponse2.getValue(selectedItem.row,4));
+					var tableData = [
+						currentAgency, currentDay, FTresponse2.getValue(selectedItem.row,1), FTresponse2.getFormattedValue(selectedItem.row,2).split(":")[1] + " min",
+						FTresponse2.getValue(selectedItem.row,5), FTresponse2.getValue(selectedItem.row,6), FTresponse2.getValue(selectedItem.row,7), FTresponse2.getValue(selectedItem.row,8),
+						FTresponse2.getValue(selectedItem.row,9), FTresponse2.getValue(selectedItem.row,10), FTresponse2.getValue(selectedItem.row,11), FTresponse2.getValue(selectedItem.row,12),
+						FTresponse2.getValue(selectedItem.row,13), FTresponse2.getValue(selectedItem.row,14), FTresponse2.getValue(selectedItem.row,15), FTresponse2.getFormattedValue(selectedItem.row,16).split(":")[1] + " min",
+						FTresponse2.getFormattedValue(selectedItem.row,17).split(":")[1] + " min", FTresponse2.getFormattedValue(selectedItem.row,18).split(":")[1] + " min", FTresponse2.getFormattedValue(selectedItem.row,19).split(":")[1] + " min"
+					];
+					drawBarGraph(currentAgency, currentDay);
+					document.getElementById('chart-canvas').style.display="";
+					calcRoute(userLatlng1, destinoLatlng1, null, tableData, createSideInfo, openSideInfo);
+					directionsDisplay.setMap(myMap);
+					setTimeout(document.getElementById("menu-link-2").click(), 5000);
+				}
+				function calcRoute(start, end, f, g, _callback2, _callback3) {
+					function directSerHandler(result, status){
+						if (status == 'OK') {
+							directionsDisplay.setDirections(result);
+							travelTimeCalc = result.routes[0].legs[0].duration.text;
+							travelDistCalc = result.routes[0].legs[0].distance.text;
+							if(f){
+								_callback2(
+									f.row['AGENCIA'].value,
+									"Para el dia " + f.row['DIA'].value + " a las " + f.row['HORADELDIA'].value,
+									f.row['TIEMPO'].value.split(":")[1] + " min",
+									travelTimeCalc,
+									f.row['DIRECCION'].value,
+									f.row['HORARIO LUNES A VIERNES'].value,
+									f.row['HORARIO SABADO'].value,
+									f.row['HORARIO DOMINGO'].value,
+									f.row['DAP'].value,
+									f.row['CSA'].value,
+									f.row['TEAP TOTAL'].value,
+									f.row['TEAP ALTAS'].value,
+									f.row['TEAP BAJAS'].value,
+									f.row['TEAP CONSULTAS'].value,
+									f.row['TEAP RECLAMOS'].value,
+									f.row['TIEMPO DE ATENCION ALTA'].value.split(":")[1] + " min",
+									f.row['TIEMPO DE ATENCION BAJA'].value.split(":")[1] + " min",
+									f.row['TIEMPO DE ATENCION CONSULTA'].value.split(":")[1] + " min",
+									f.row['TIEMPO DE ATENCION RECLAMO'].value.split(":")[1] + " min"
+								);
+								_callback3();
+							}
+							else if(g){
+								_callback2(
+									g[0],
+									"Para el dia " + g[1] + " a las " + g[2],
+									g[3],
+									travelTimeCalc,
+									g[4],
+									g[5],
+									g[6],
+									g[7],
+									g[8],
+									g[9],
+									g[10],
+									g[11],
+									g[12],
+									g[13],
+									g[14],
+									g[15],
+									g[16],
+									g[17],
+									g[18]
+								);
+								_callback3();
+							}
+						}
+						else {
+							isThereAnyRoute = null;
+							window.alert('La peticion de ruta fallo debido a: ' + status + 'con inicio: ' + start + 'y fin: ' + end);
+							if(f){
+								_callback2(
+									f.row['AGENCIA'].value,
+									"Para el dia " + f.row['DIA'].value + " a las " + f.row['HORADELDIA'].value,
+									f.row['TIEMPO'].value.split(":")[1] + " min",
+									travelTimeCalc,
+									f.row['DIRECCION'].value,
+									f.row['HORARIO LUNES A VIERNES'].value,
+									f.row['HORARIO SABADO'].value,
+									f.row['HORARIO DOMINGO'].value,
+									f.row['DAP'].value,
+									f.row['CSA'].value,
+									f.row['TEAP TOTAL'].value,
+									f.row['TEAP ALTAS'].value,
+									f.row['TEAP BAJAS'].value,
+									f.row['TEAP CONSULTAS'].value,
+									f.row['TEAP RECLAMOS'].value,
+									f.row['TIEMPO DE ATENCION ALTA'].value.split(":")[1] + " min",
+									f.row['TIEMPO DE ATENCION BAJA'].value.split(":")[1] + " min",
+									f.row['TIEMPO DE ATENCION CONSULTA'].value.split(":")[1] + " min",
+									f.row['TIEMPO DE ATENCION RECLAMO'].value.split(":")[1] + " min"
+								);
+								_callback3();
+							}
+							else if(g){
+								_callback2(
+									g[0],
+									"Para el dia " + g[1] + " a las " + g[2],
+									g[3],
+									travelTimeCalc,
+									g[4],
+									g[5],
+									g[6],
+									g[7],
+									g[8],
+									g[9],
+									g[10],
+									g[11],
+									g[12],
+									g[13],
+									g[14],
+									g[15],
+									g[16],
+									g[17],
+									g[18]
+								);
+								_callback3();
+							}
+						}
+					}
+					var travelTimeCalc;
+					var travelDistCalc;
+					var request = {
+						origin: start,
+						destination: end,
+						travelMode: 'DRIVING'
+					};
+					directionsService.route(request, directSerHandler);
+					showSnackBar();
+				}
+				
+				function handleLocationError(browserHasGeolocation) {
+					if (browserHasGeolocation) {
+						bawotext = '<strong>El servicio de Geolocalizacion fallo. Enciende tu GPS o haz clic en tu ubicacion precisa por favor.</strong>';
+						bawstyle = 'warning';
+						bawtime = 3000;
+						bawwhat = '#secondSection';
+						bawid = 'nogeo';
+					}
+					else {
+						bawotext = '<strong>Tu navegador o tu dispositivo no soportan la geolocalizacion. Enciende tu GPS o haz clic en tu ubicacion precisa por favor.</strong>';
+						bawstyle = 'warning';
+						bawtime = 3000;
+						bawwhat = '#secondSection';
+						bawid = 'nogeo';
+					}
+				}
+				function addMarker(location) {
+					var marker = new google.maps.Marker({
+						position: location,
+						map: myMap,
+						icon: "img/pin.png",
+						animation: google.maps.Animation.DROP,
+						title:"Posicion"
+					});
+					markers.push(marker);
+				}
+				function addTimeInfowindow (tiwlocation, tiwcontent) {
+					var tInfowindow = new google.maps.InfoWindow({
+						content: tiwcontent,
+						disableAutoPan: true,
+						position: tiwlocation,
+						pixelOffset: new google.maps.Size(0, -25)
+					});
+					timeInfowindows.push(tInfowindow);
+					tInfowindow.open(myMap);
+					var iwOuter = $('.gm-style-iw');
+
+					var iwBackground = iwOuter.prev();
+
+					// Remove the background shadow DIV
+					iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+
+					// Remove the white background DIV
+					iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+				}
+
+				function setMapOnAll(map) {
+					for (var i = 0; i < markers.length; i++) {
+						markers[i].setMap(map);
+					}
+					for (var ytiw = 0; ytiw < timeInfowindows.length; ytiw++) {
+						timeInfowindows[ytiw].close();
+					}
+					if (layerInMap != null) {
+						layerInMap.setMap(map);
+					}
+					if (polygonLayer != null) {
+						for (var o = 0; o < polygonLayer.length; o++) {
+							if (polygonLayer[o] != null) {
+								polygonLayer[o].setMap(map);
+							}
+						}
+					}
+					directionsDisplay.setMap(map);
+				}
+				
+				function autocenterwhenresize() {
+					google.maps.event.trigger(myMap, "resize");
+					myMap.setCenter(currentCenter);
+					drawVisualization(ColChartResponse);
+				}
+				function layerplayer (userLatlng) {
+					layerInMap = new google.maps.FusionTablesLayer({
+						query: {
+							select: 'LATITUD',
+							from: FT_TableID,
+							where: 'OPERADOR=\'' + ope + '\' AND DIA=\'' + setDia(days) + '\' AND HORA=\'' + setHora() + '\'',
+							orderBy: 'ST_DISTANCE(LATITUD, LATLNG(' + userLatlng.lat() + ',' + userLatlng.lng() + '))',
+							limit: 10,
+						},
+						suppressInfoWindows:true,	
+						options: {
+							styleId: 2,
+							templateId: 2
+						}
+					});
+					// Listener - actualización de gráficos
+					google.maps.event.addListener(layerInMap, 'click', function(e) {
+						
+						displayElement(fourthSectionDOM);
+						displayElement(fifthSectionDOM);
+						currentAgency = e.row['AGENCIA'].value;
+						currentDay = e.row['DIA'].value; 
+						drawBarGraph(e.row['AGENCIA'].value, e.row['DIA'].value);
+						document.getElementById('chart-canvas').style.display="";
+						destinoLatlng1 = e.latLng;
+						calcRoute(userLatlng1, destinoLatlng1, e, null, createSideInfo, openSideInfo);
+						directionsDisplay.setMap(myMap);
+					});
+					return layerInMap;
+				}
+				
+				function isScrolledIntoView(elem){
+					var docViewTop = $(window).scrollTop();
+					var docViewBottom = docViewTop + $(window).height();
+					var elemTop = $(elem).offset().top;
+					var elemBottom = elemTop + $(elem).height();
+					return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom) && (elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+				}
+				
+				function newOperadora(){
+					currentCenter = myMap.getCenter();
+					currentZoom = myMap.getZoom();
+					setMapOnAll(null);
+					k = 0;
+					for (var i = 0; i < polygonLayer.length; i++) {
+						if (polygonLayer[i] != null){
+							polygonLayer[i].setMap(myMap);
+							polygonLayer[i].setOptions({fillColor: colorOpe()});
+						}
+					}
+					if (place == 'false'){
+						myMap.setCenter(myMapCenter);
+						myMap.setZoom(myMapZoom);
+					}
+					noDisplayElement(thirdSectionDOM);
+					noDisplayElement(fourthSectionDOM);
+					noDisplayElement(fifthSectionDOM);
+					closeSideInfo();
+					showSnackBar3();
+					console.log("NewOperadora Executed");
+				}
+				
+				function parsePolygonXML (polygonXML) {
+					var polygonXMLtemp = polygonXML;
+					polygonXMLtemp = polygonXMLtemp.substr(51, polygonXMLtemp.substr(51, polygonXMLtemp.length - 1).indexOf('<')).split(" ");
+					var polygonpathkmltemp = [];
+					for (k = 0; k < polygonXMLtemp.length; k++){
+						polygonpathkmltemp.push({lat: parseFloat(polygonXMLtemp[k].split(",")[1]), lng: parseFloat(polygonXMLtemp[k].split(",")[0])});
+					}
+					return polygonpathkmltemp;
+				}
+				
+				function colorOpe(){
+					if (ope=='BITEL'){
+						return '#FFFF00';
+					}
+					else if(ope=='CLARO'){
+						return '#FF0000';
+					}
+					else if(ope=='ENTEL'){
+						return '#0000FF';
+					}
+					else if(ope=='MOVISTAR'){
+						return '#00FF00';
+					}
+					else if(ope=='TUENTI'){
+						return '#66B2FF';
+					}
+					else if(ope=='VIRGIN'){
+						return '#990000';
+					}
+					else {
+						return '#C0C0C0';
+					}
+				}
+				
+				function visualPolygonXML (visualPolygon, i) {
+				
+					polygonLayer[i] = new google.maps.Polygon({
+						paths: visualPolygon,
+						strokeColor: "FFFFFF",
+						strokeOpacity: 1,
+						strokeWeight: 1,
+						fillColor: '#C0C0C0',
+						fillOpacity: 0.25
+					});
+					
+					google.maps.event.addListener(polygonLayer[i], 'mouseover', function() {
+							this.setOptions({fillOpacity: 0.75});
+					});
+					google.maps.event.addListener(polygonLayer[i], 'mouseout', function() {
+						this.setOptions({fillOpacity: 0.25});
+					});
+					google.maps.event.addListener(polygonLayer[i], 'click', function(e) {
+						this.setOptions({fillOpacity: 0});
+						myMap.setCenter(polyPos[i]);
+						myMap.setZoom(9);
+						setMapOnAll(null);
+					});
+					polygonLayer[i].setMap(myMap);					
+				}				
+				function displayElement (idD1) {
+					idD1.style.display = "block";
+				}				
+				function noDisplayElement (idD1) {
+					idD1.style.display = "none";
+				}				
+				function Utils() {
+				}
+				Utils.prototype = {
+					constructor: Utils,
+					isElementInView: function (element, fullyInView) {
+						var pageTop = $(window).scrollTop();
+						var pageBottom = pageTop + $(window).height();
+						var elementTop = $(element).offset().top;
+						var elementBottom = elementTop + $(element).height();
+						if (fullyInView === true) {
+							return ((pageTop < elementTop) && (pageBottom > elementBottom));
+						} else {
+							return ((elementTop <= pageBottom) && (elementBottom >= pageTop));
+						}
+					}
+				};
+				var Utils = new Utils();				
+				function createSideInfo(/*cacImage, */cacTitle, diaYHora, tiempoPrometio, tiempoAuto, direccionX, horarioX, horarioSabados, horarioDomingos, dapX, csaX, teapX, teapAltas, teapBajas, teapConsultas, teapReclamos, tiempoEspAlta, tiempoEspBaja, tiempoEspConsulta, tiempoEspReclamo){
+					/*document.getElementById("cac_image").src = cacImage;*/
+					document.getElementById("cac-title").innerHTML = cacTitle;
+					document.getElementById("dia-y-hora").innerHTML = diaYHora;
+					document.getElementById("tiempo-promedio").innerHTML = tiempoPrometio;
+					document.getElementById("tiempo-auto").innerHTML = tiempoAuto;
+					document.getElementById("tiempo-esp-alta").innerHTML = tiempoEspAlta;
+					document.getElementById("tiempo-esp-baja").innerHTML = tiempoEspBaja;
+					document.getElementById("tiempo-esp-consulta").innerHTML = tiempoEspConsulta;
+					document.getElementById("tiempo-esp-reclamo").innerHTML = tiempoEspReclamo;
+					//document.getElementById("tiempo-total").innerHTML = "Escoge el tipo de tramite para calcular el tiempo de atencion.";
+					document.getElementById("direccion").innerHTML = direccionX;
+					document.getElementById("horario").innerHTML = horarioX;
+					document.getElementById("horario-sabados").innerHTML = horarioSabados;
+					document.getElementById("horario-domingos").innerHTML = horarioDomingos;
+					document.getElementById("dap").innerHTML = dapX;
+					document.getElementById("csa").innerHTML = csaX;
+					document.getElementById("teap").innerHTML = teapX;
+					document.getElementById("teap-altas").innerHTML = teapAltas;
+					document.getElementById("teap-bajas").innerHTML = teapBajas;
+					document.getElementById("teap-consultas").innerHTML = teapConsultas;
+					document.getElementById("teap-reclamos").innerHTML = teapReclamos;
+				}				
+				function openSideInfo () {
+					currentCenter = myMap.getCenter();
+					currentZoom = myMap.getZoom();
+					viewPortWidth = document.getElementById("headerSection").clientWidth;
+					if (viewPortWidth < 768) {
+						document.getElementById("infoModal").style.width = "100vw";
+						//document.getElementById("infoModal").style.height = "90vh";
+						document.getElementById("mapDiv").style.marginLeft = "100vw";
+						document.getElementById("mapDiv").style.width = "0vw";
+						document.getElementById("contenedorInfo").style.display = "block";
+					}	
+					else if (viewPortWidth < 992){
+						document.getElementById("infoModal").style.width = "100vw";
+						//document.getElementById("infoModal").style.height = "90vh";
+						document.getElementById("mapDiv").style.marginLeft = "100vw";
+						document.getElementById("mapDiv").style.width = "0vw";
+						document.getElementById("contenedorInfo").style.display = "block";
+					}
+					else if (viewPortWidth < 1200){
+						document.getElementById("infoModal").style.width = "40vw";
+						//document.getElementById("infoModal").style.height = "90vh";
+						document.getElementById("mapDiv").style.marginLeft = "40vw";
+						document.getElementById("mapDiv").style.width = "60vw";
+						document.getElementById("contenedorInfo").style.display = "block";
+					}
+					else {
+						document.getElementById("infoModal").style.width = "30vw";
+						//document.getElementById("infoModal").style.height = "90vh";
+						document.getElementById("mapDiv").style.marginLeft = "30vw";
+						document.getElementById("mapDiv").style.width = "70vw";
+						document.getElementById("contenedorInfo").style.display = "block";
+					}
+				}				
+				function closeSideInfo () {
+					document.getElementById("infoModal").style.width = "0vw";
+					document.getElementById("mapDiv").style.marginLeft = "0vw";
+					document.getElementById("mapDiv").style.width = "100vw";
+					document.getElementById("contenedorInfo").style.display = "none";
+					myMap.setCenter(currentCenter);
+					myMap.setZoom(currentZoom);
+				}				
+				function showSnackBar () {
+					// Get the snackbar DIV
+					var snackbarDOM = document.getElementById("mySnackBar");
+					// Add the "show" class to DIV
+					snackbarDOM.className = "show";
+					//snackbarDOM.style.visibility = "visible";
+					console.log("snackbar showed");
+					// After 3 seconds, remove the show class from DIV
+					setTimeout(
+						function(){
+							snackbarDOM.className = snackbarDOM.className.replace("show", "");
+							console.log("snackbar hiden");
+						},
+						5000
+					);
+				}
+				function showSnackBar3 () {
+					// Get the snackbar DIV
+					var snackbar3DOM = document.getElementById("mySnackBar3");
+					// Add the "show" class to DIV
+					snackbar3DOM.className = "show";
+					//snackbarDOM.style.visibility = "visible";
+					console.log("snackbar showed");
+					// After 3 seconds, remove the show class from DIV
+					setTimeout(
+						function(){
+							snackbar3DOM.className = snackbar3DOM.className.replace("show", "");
+							console.log("snackbar hiden");
+						},
+						5000
+					);
+				}
+				function openTiempo(evt, timeName) {
+					// Declare all variables
+					var i, tabcontent, tablinks;
+
+					// Get all elements with class="tabcontent" and hide them
+					tabcontent = document.getElementsByClassName("tabcontent");
+					for (i = 0; i < tabcontent.length; i++) {
+						tabcontent[i].style.display = "none";
+					}
+
+					// Get all elements with class="tablinks" and remove the class "active"
+					tablinks = document.getElementsByClassName("tablinks");
+					for (i = 0; i < tablinks.length; i++) {
+						tablinks[i].className = tablinks[i].className.replace(" active", "");
+					}
+
+					// Show the current tab, and add an "active" class to the link that opened the tab
+					document.getElementById(timeName).style.display = "block";
+					
+					evt.currentTarget.className += " active";
+					document.getElementById("tiempo-total").innerHTML = String(parseInt(document.getElementById("tiempo-promedio").innerHTML.split(" ")[0]) + parseInt(document.getElementById("tiempo-esp-" + timeName).innerHTML.split(" ")[0])) + " min";
+				}
+			</script>
+			
+			<!-- Main JavaScript -->
+			<script>
+				var horaDeHoy;
+				var myMap;
+				var myMapCenter;
+				var myMapZoom;
+				var myMapOptions;
+				var directionsDisplay;
+				var directionsService;
+				var centerForAutoCenter;
+				var currentAgency;
+				var currentDay;
+				var info = null;
+				var gpolygons = [];
+				var geoXml = null;
+				var ope = "ZERO";
+				var FT_TableID = '1oBZUH9o_Gnlw5vewRTS2J9MWKWV9-XzUXsVJqsiE';
+				var FTresponse = null;
+				var FTresponse2 = null;
+				var dptResponseFT = null;
+				var dptResponseFT2 = null;
+				var layer = null;
+				var layerInMap = null;
+				var userLatlng1 = null;
+				var destinoLatlng1 = null;
+				var todayDate = new Date();
+				var markers = [];
+				var timeInfowindows = [];
+				var days = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
+				var operadoraButtonObject1 = document.getElementById("Operadora1");
+				var operadoraButtonObject2 = document.getElementById("Operadora2");
+				var operadoraButtonObject3 = document.getElementById("Operadora3");
+				var operadoraButtonObject4 = document.getElementById("Operadora4");
+				var operadoraButtonObject5 = document.getElementById("Operadora5");
+				var operadoraButtonObject6 = document.getElementById("Operadora6");
+				var bawotext;
+				var bawstyle;
+				var	bawtime;
+				var	bawwhat;
+				var	bawid;
+				var k = 0;
+				var posforGeocode;
+				var place;
+				var isThereAnyRoute = true;
+				var travelDuration;
+				var travelDistance;
+				var departLayer = null;
+				var polygonLayer = [];
+				var polyPos = [];
+				var thirdSectionDOM = document.getElementById("thirdSection");
+				var fourthSectionDOM = document.getElementById("fourthSection");
+				var fifthSectionDOM = document.getElementById("fifthSection");
+				var ColChartResponse;
+				var viewPortWidth;
+				var currentCenter;
+				var currentZoom;
+				var currTiwlocation;
+				var currTiwcontent;
+				/* Toggle between adding and removing the "active" and "show" classes when the user clicks on one of the "Section" buttons. The "active" class is used to add a background color to the current button when its belonging panel is open. The "show" class is used to open the specific accordion panel */
+				var acc = document.getElementsByClassName("accordion");
+				var i;
+				
+				for (i = 0; i < acc.length; i++) {
+					acc[i].onclick = function(){
+						this.classList.toggle("active");
+						this.nextElementSibling.classList.toggle("show");
+					}
+				}
+
+				myMapCenter = {
+					lat: -9.04318,
+					lng: -77.0282400
+				};
+				myMapZoom = 5;
+				myMapOptions = {
+						center: myMapCenter,
+						zoom: myMapZoom,
+						streetViewControl: false,
+                        mapTypeControl: false
+				};
+				// Carga API para gráficos
+				google.load('visualization', '1', {'packages':['corechart', 'table', 'geomap']});
+				// Set a callback to run when the Google Visualization API is loaded.
+				google.setOnLoadCallback(readyQuery);
+				function initMap() {
+					myMap = new google.maps.Map(document.getElementById('map-canvas'), myMapOptions);
+					directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+					directionsService = new google.maps.DirectionsService;		
+					myMapListener = google.maps.event.addListener(myMap, 'click', function(e) {
+						if (ope == "ZERO"){
+							closeModal ('yesgeo');
+							closeModal ('nogeo');
+							bootstrap_alertwarning('<strong>Primero escoge un Operador por favor. </strong>', 'warning', 3000, '#firstSection', 'ope');
+							setTimeout(document.getElementById("menu-link-1").click(), 3000);
+						}
+						else {
+							closeModal ('yesgeo');
+							closeModal ('nogeo');
+							userLatlng1 = e.latLng;
+							setMapOnAll(null);
+							displayElement (thirdSectionDOM);
+							addMarker(userLatlng1);
+							layerInMap = layerplayer(userLatlng1);
+							layerInMap.setMap(myMap);
+							queryTable();
+							console.log(e);
+						}
+					});
+					if (navigator.geolocation) {
+						navigator.geolocation.getCurrentPosition(
+							function(position) {
+								place = 'true';
+								posforGeocode = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+								myMap.setCenter(posforGeocode);
+								myMap.setZoom(12);
+								bawotext = '<strong>Aqui estas.</strong>';
+								bawstyle = 'success';
+								bawtime = 3000;
+								bawwhat = '#secondSection';
+								bawid = 'yesgeo';
+							},
+							function() {
+								handleLocationError(true);
+								place = 'false';
+							}
+						);
+					}
+					else {
+						// Browser doesnt support Geolocation
+						handleLocationError(false);
+						place = 'false';
+					}
+					//google.maps.event.addDomListener(window, 'load', initMap);
+					google.maps.event.addDomListener(operadoraButtonObject1, "click", function(){
+						ope = "BITEL";
+						newOperadora();
+						setTimeout(document.getElementById("menu-link-2").click(), 3000);
+					});
+					google.maps.event.addDomListener(operadoraButtonObject2, "click", function(){
+						ope = "CLARO";
+						newOperadora();
+						setTimeout(document.getElementById("menu-link-2").click(), 3000);
+					});
+					google.maps.event.addDomListener(operadoraButtonObject3, "click", function(){
+						ope = "ENTEL";
+						newOperadora();
+						setTimeout(document.getElementById("menu-link-2").click(), 3000);
+					});
+					google.maps.event.addDomListener(operadoraButtonObject4, "click", function(){
+						ope = "MOVISTAR";
+						newOperadora();
+						setTimeout(document.getElementById("menu-link-2").click(), 3000);
+					});
+					google.maps.event.addDomListener(operadoraButtonObject5, "click", function(){
+						ope = "TUENTI";
+						newOperadora();
+						setTimeout(document.getElementById("menu-link-2").click(), 3000);
+					});
+					google.maps.event.addDomListener(operadoraButtonObject6, "click", function(){
+						ope = "VIRGIN";
+						newOperadora();
+						setTimeout(document.getElementById("menu-link-2").click(), 3000);
+					});
+					google.maps.event.addDomListener(window, "resize", autocenterwhenresize);
+					directionsDisplay.setPanel(document.getElementById('directions-panel'));	
+					showSnackBar();
+				}
+			</script>
+			
+			<!-- Own jQuery -->
+			<script>
+				$(document).ready(function(){
+					//jQuery to collapse the navbar on scroll
+					$(window).scroll(function() {
+						if ($(".navbar").offset().top > 50) {
+							$(".navbar-fixed-top").addClass("top-nav-collapse");
+						} else {
+							$(".navbar-fixed-top").removeClass("top-nav-collapse");
+						}
+					});
+					//jQuery for page scrolling feature - requires jQuery Easing plugin
+					$(function() {
+						$('a.page-scroll').bind('click', function(event) {
+							var $anchor = $(this);
+							$('html, body').stop().animate({
+								scrollTop: $($anchor.attr('href')).offset().top
+							}, 1500, 'easeInOutExpo');
+							event.preventDefault();
+						});
+					});
+					// Floating label headings for the contact form
+					$(function() {
+						$("body").on("input propertychange", ".floating-label-form-group", function(e) {
+							$(this).toggleClass("floating-label-form-group-with-value", !!$(e.target).val());
+						}).on("focus", ".floating-label-form-group", function() {
+							$(this).addClass("floating-label-form-group-with-focus");
+						}).on("blur", ".floating-label-form-group", function() {
+							$(this).removeClass("floating-label-form-group-with-focus");
+						});
+					});
+					$(document).on('click','.navbar-collapse.in',function(e) {
+						if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
+							$(this).collapse('hide');
+						}
+					});
+					$('.closeMyModal').click(function() {
+						$('#instructionModal').modal('hide');
+					});
+					$(window).resize(function(){
+						drawVisualization(ColChartResponse);
+					});
+					$(window).scroll(function() {
+						if(Utils.isElementInView($('#secondSection'), true) && k == 0){
+							bootstrap_alertwarning(bawotext, bawstyle, bawtime, bawwhat, bawid);
+							if (place == 'true'){
+								if (ope == "ZERO"){
+									closeModal ('yesgeo');
+									closeModal ('nogeo');
+									bootstrap_alertwarning('<strong>Primero escoge un Operador por favor. </strong>', 'warning', 3000, '#firstSection', 'ope');
+									setTimeout(document.getElementById("menu-link-1").click(), 3000);
+								}
+								else {
+									closeModal ('yesgeo');
+									closeModal ('nogeo');
+									userLatlng1 = posforGeocode;
+									setMapOnAll(null);
+									displayElement (thirdSectionDOM);
+									addMarker(userLatlng1);
+									layerInMap = layerplayer(userLatlng1);
+									layerInMap.setMap(myMap);
+									queryTable();
+								}
+							}
+							k += 1;
+						}    
+					});
+					$('[data-toggle="tooltip"]').tooltip(); 
+				});
+			</script>
+			
+			<!-- Google Maps API -->
+			<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAnqYwdTvaVx25IsPL21zcrAjLH8aqc3k&callback=initMap"></script>
+			
+		</body>
+	</html>
